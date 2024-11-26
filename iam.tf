@@ -109,3 +109,9 @@ data "archive_file" "feishu_lambda" {
   source_file = "./src/feishu_function.py"
   output_path = "./src/feishu_function.zip"
 }
+
+data "archive_file" "dynamodb_lambda" {
+  type        = "zip"
+  source_file = "./src/dynamodb_function.py"
+  output_path = "./src/dynamodb_function.zip"
+}

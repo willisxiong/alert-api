@@ -1,0 +1,46 @@
+{
+    "phone_nums": [
+        {"address": "<E.164 phone number"},
+        {"address": "<E.164 phone number>"}
+    ],
+    "payload": {
+        "suppressed": false,
+        "devices": [
+            {
+                "system-ip": "<cisco cpe system ip>"
+            }
+        ],
+        "eventname": "interface-state-change",
+        "type": "interface-state-change",
+        "rulename": "interface-state-change",
+        "component": "VPN",
+        "entry_time": 1720072743537,
+        "statcycletime": 1720072627832,
+        "message": "The interface oper-state changed to down",
+        "severity": "Critical",
+        "severity_number": 1,
+        "uuid": "<cisco cpe uuid>",
+        "values": [
+            {
+                "host-name": "SDW-C-SGP-GW-POCDemo-NOM",
+                "system-ip": "<cisco cpe system ip>",
+                "if-name": "ge0/2",
+                "new-state": "down",
+                "vpn-id": "0"
+            }
+        ],
+        "rule_name_display": "Interface_State_Change",
+        "receive_time": 1720072743510,
+        "values_short_display": [
+            {
+                "host-name": "SDW-C-SGP-GW-POCDemo-NOM",
+                "system-ip": "<cisco cpe system ip>",
+                "if-name": "ge0/2",
+                "new-state": "down"
+            }
+        ],
+        "system_ip": "<cisco cpe system ip>",
+        "acknowledged": false,
+        "active": true
+    }
+}

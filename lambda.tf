@@ -9,11 +9,11 @@ resource "aws_lambda_function" "sms_func" {
 
 // allow api gateway access sms function
 resource "aws_lambda_permission" "allow_apigateway_sms" {
-  statement_id = "AllowExecutionFromApigatewayInSms"
-  action = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromApigatewayInSms"
+  action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.sms_func.function_name
-  principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
 }
 
 resource "aws_lambda_function" "voice_func" {
@@ -27,11 +27,11 @@ resource "aws_lambda_function" "voice_func" {
 
 // allow api gateway access voice function
 resource "aws_lambda_permission" "allow_apigateway_voice" {
-  statement_id = "AllowExecutionFromApigatewayInVoice"
-  action = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromApigatewayInVoice"
+  action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.voice_func.function_name
-  principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
 }
 
 resource "aws_lambda_function" "feishu_func" {
@@ -45,11 +45,28 @@ resource "aws_lambda_function" "feishu_func" {
 
 // allow api gateway access feishu function
 resource "aws_lambda_permission" "allow_apigateway_feishu" {
-  statement_id = "AllowExecutionFromApigatewayInFeishu"
-  action = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromApigatewayInFeishu"
+  action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.feishu_func.function_name
-  principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
+}
+
+resource "aws_lambda_function" "dynamodb_func" {
+  filename      = data.archive_file.dynamodb_lambda.output_path
+  function_name = "dynamodb_function"
+  role          = aws_iam_role.role_for_dynamodb_action_lambda.arn
+  runtime       = "python3.12"
+  handler       = "dynamodb_function.lambda_handler"
+}
+
+// allow api gateway access feishu function
+resource "aws_lambda_permission" "allow_apigateway_dynamodb" {
+  statement_id  = "AllowExecutionFromApigatewayInDynamodb"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.dynamodb_func.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.alert_api.execution_arn}/*/*"
 }
 
 # create lambda layer for pytz, a time zone library
