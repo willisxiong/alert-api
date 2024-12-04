@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: sdwan-alert
+  version: '1.0'
+servers:
+  - url: <API_GATEWAY_URL>
+    description: AWS API Gateway
+paths:
+  /outbound-voicecall:
+    post:
+      summary: trigger voicecall
+      description: The voicecall support phone number in SG, UK, HK, AU, US
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/voicecall'
+      responses:
+        '200':
+          description: OK
+  /outbound-sms:
+    post:
+      summary: trigger outbound-sms
+      description: The sms support phone number in HK and Mainland China
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sms'
+      responses:
+        '200':
+          description: OK
+  /outbound-feishu:
+    post:
+      summary: trigger outbound-feishu
+      description: send alert message to feishu group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/feishu'
+      responses:
+        '200':
+          description: OK
+  /alert-record:
+    post:
+      summary: store the alert message in dynamodb
+      description: store the alert message in dynamodb
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/record'
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    voicecall:
+      type: object
+      properties:
+        phone_num:
+          type: string
+    sms:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        phone_nums:
+          type: array
+          items:
+            type: object
+            properties:
+              address:
+                type: string
+        payload:
+          type: object
+          properties:
+            entry_time:
+              type: number
+            message:
+              type: string
+            severity:
+              type: string
+            values:
+              type: array
+              items:
+                type: object
+                properties:
+                  host-name:
+                    type: string
+    feishu:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        payload:
+          type: object
+          properties:
+            entry_time:
+              type: number
+            message:
+              type: string
+            severity:
+              type: string
+            values:
+              type: array
+              items:
+                type: object
+                properties:
+                  host-name:
+                    type: string
+    record:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        operation:
+          type: string
+          enum:
+            - create
+            - update
+            - delete
+            - list
+        payload:
+          type: object
+          properties:
+            Item:
+              type: object
+              properties:
+                entry_time:
+                  type: number
+                message:
+                  type: string
+                severity:
+                  type: string
+                values:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      host-name:
+                        type: string
